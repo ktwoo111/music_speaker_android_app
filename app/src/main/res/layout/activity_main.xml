@@ -28,7 +28,6 @@
                 android:text="@string/client_button_text"
                 android:id="@+id/client_button"
                 android:gravity="center_horizontal"/>
-
     </LinearLayout>
 
 </LinearLayout>
