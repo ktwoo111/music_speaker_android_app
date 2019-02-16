@@ -3,4 +3,5 @@
 
     <string name="host_button_text">HOST</string>
     <string name="client_button_text">CLIENT</string>
+    <string name="add_music_button">ADD</string>
 </resources>
