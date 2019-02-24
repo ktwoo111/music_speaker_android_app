@@ -3,35 +3,39 @@ package com.csci448.rphipps.musync
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.queue_item_list.view.*
 import kotlinx.android.synthetic.main.queue_list.*
+import kotlinx.android.synthetic.main.queue_list.view.*
 
 class QueueListFragment: Fragment() {
 
-    private lateinit var adapter: CrimeListAdapter
-    private class CrimeListAdapter(val fragment: QueueListFragment,
-                                   val crimes: List<Music>)
-        : RecyclerView.Adapter<CrimeHolder>() {
+    private lateinit var adapter: MusicListAdapter
+    private class MusicListAdapter(val fragment: QueueListFragment,
+                                   val musicList: List<Music>)
+        : RecyclerView.Adapter<MusicHolder>() {
         override fun getItemCount(): Int {
-            return crimes.size
+            return musicList.size
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CrimeHolder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MusicHolder {
             val layoutInflater = LayoutInflater.from(fragment.context)
             val view = layoutInflater.inflate(R.layout.queue_item_list, parent, false)
-            return CrimeHolder(fragment, view)
+            return MusicHolder(fragment, view)
         }
 
-        override fun onBindViewHolder(holder: CrimeHolder, position: Int) {
-            holder.bind(crimes[position], position)
+        override fun onBindViewHolder(holder: MusicHolder, position: Int) {
+            holder.bind(musicList[position], position)
         }
     }
-    private class CrimeHolder(val fragment: QueueListFragment, val view: View)
+    private class MusicHolder(val fragment: QueueListFragment, val view: View)
         : RecyclerView.ViewHolder(view) {
         fun bind(music: Music, position: Int) {
             view.list_item_run_time.text = music.runTime.toString()
@@ -45,13 +49,31 @@ class QueueListFragment: Fragment() {
         private const val REQUEST_CODE_DETAILS_FRAGMENT = 0
     }
 
-    /*private fun updateUI() {
+    private fun updateUI() {
 
-        adapter = CrimeListAdapter(this, MusicLab.getMusicList() )
+        adapter = MusicListAdapter(this, MusicLab.getMusicList() )
         music_queue_recycler_view.adapter = adapter
-    }*/
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int,
                                   data: Intent?) {
         //Possibly need later
     }
+    override fun onResume() {
+        super.onResume()
+        updateUI()
+        Log.d(LOG_TAG, "onResume called")
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val rootView = inflater.inflate(R.layout.queue_list, container, false)
+        rootView.music_queue_recycler_view.layoutManager = LinearLayoutManager( activity )
+        adapter = MusicListAdapter(this, MusicLab.getMusicList() )
+        rootView.music_queue_recycler_view.adapter = adapter
+        return rootView
+    }
+
 }

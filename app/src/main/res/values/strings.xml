@@ -9,4 +9,7 @@
     <string name="title_text">Title:</string>
     <string name="artist_text">Artist:</string>
     <string name="ip_label_text">IP:</string>
+    <string name="less_than_symbol">&lt;</string>
+    <string name="greater_than_symbol">&gt;</string>
+
 </resources>

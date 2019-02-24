@@ -2,7 +2,7 @@ package com.csci448.rphipps.musync
 
 import java.util.*
 
-class MusicLab {
+object MusicLab {
     private val musicList: MutableList<Music> = mutableListOf()
     fun getMusicList() = musicList
     init {
