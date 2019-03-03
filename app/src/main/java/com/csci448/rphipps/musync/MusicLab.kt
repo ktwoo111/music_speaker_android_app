@@ -16,7 +16,7 @@ object MusicLab {
         }
     }
 
-    fun getCrime(id: UUID): Music? {
+    fun getMusic(id: UUID): Music? {
         for(music in musicList) {
             if(music.id == id) {
                 return music

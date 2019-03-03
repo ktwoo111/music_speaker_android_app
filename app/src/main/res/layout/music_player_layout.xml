@@ -78,6 +78,7 @@
                 android:textSize="24dp"/>
 
         <TextView
+                android:id="@+id/ip_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="12:34:56:78:90:8080"
