@@ -11,7 +11,7 @@ class MusicPlayerActivity : AppCompatActivity() {
     companion object {
         private val IP_EXTRA = "IP_EXTRA"
         private var ip = ""
-        fun createIntent(context: Context, ip: String) : Intent {
+        fun createIntent(context: Context?, ip: String) : Intent {
             val intent = Intent(context, MusicPlayerActivity::class.java)
             intent.putExtra(IP_EXTRA, ip)
             return intent
