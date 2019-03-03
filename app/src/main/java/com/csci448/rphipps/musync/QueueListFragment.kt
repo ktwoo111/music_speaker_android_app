@@ -54,6 +54,10 @@ class QueueListFragment: Fragment() {
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater?.inflate(R.menu.menu_queue_music_player, menu)
+        val menuItemPlayer = menu?.findItem(R.id.go_to_player_item)
+        menuItemPlayer?.isVisible = true
+        val menuItemQueue = menu?.findItem(R.id.go_to_queue_item)
+        menuItemQueue?.isVisible = false
     }
     override fun onOptionsItemSelected(item: MenuItem?): Boolean =
         when(item?.itemId) {

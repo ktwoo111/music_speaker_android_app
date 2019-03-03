@@ -23,6 +23,7 @@
 
         </activity>
         <activity android:name=".AddSongActivity">
+        </activity>
         <activity android:name=".ClientActivity">
 
         </activity>

@@ -39,7 +39,7 @@ class ClientActivity : AppCompatActivity() {
         })
 
         submit_button.setOnClickListener {
-            val intent = MusicPlayerActivity.createIntent(this.baseContext, ipAddress)
+            val intent = MusicPlayerFragment.createIntent(this.baseContext, ipAddress, "CLIENT")
             startActivity(intent)
         }
     }
