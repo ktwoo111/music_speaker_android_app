@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         client_button.setOnClickListener{
-            val intent = Intent(this.baseContext, MusicPlayerActivity::class.java)
+            val intent = ClientActivity.createIntent(this.baseContext)
             startActivity(intent)
         }
     }

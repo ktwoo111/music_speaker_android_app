@@ -22,6 +22,9 @@
         <activity android:name=".MusicPlayerActivity">
 
         </activity>
+        <activity android:name=".ClientActivity">
+
+        </activity>
     </application>
 
 </manifest>
