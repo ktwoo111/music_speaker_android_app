@@ -8,9 +8,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import kotlinx.android.synthetic.main.queue_item_list.view.*
 import kotlinx.android.synthetic.main.queue_list.*
 import kotlinx.android.synthetic.main.queue_list.view.*
@@ -49,6 +47,23 @@ class QueueListFragment: Fragment() {
         private const val REQUEST_CODE_DETAILS_FRAGMENT = 0
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setHasOptionsMenu(true)
+        super.onCreate(savedInstanceState)
+    }
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(R.menu.menu_queue_music_player, menu)
+    }
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean =
+        when(item?.itemId) {
+            R.id.go_to_player_item -> {
+                val intent = Intent(this.context, MusicPlayerActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     private fun updateUI() {
 
         adapter = MusicListAdapter(this, MusicLab.getMusicList() )
@@ -74,6 +89,14 @@ class QueueListFragment: Fragment() {
         adapter = MusicListAdapter(this, MusicLab.getMusicList() )
         rootView.music_queue_recycler_view.adapter = adapter
         return rootView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        add_song_button.setOnClickListener{
+            val intent = Intent(this.context, AddSongActivity::class.java)
+            startActivity(intent)
+        }
+        super.onViewCreated(view, savedInstanceState)
     }
 
 }

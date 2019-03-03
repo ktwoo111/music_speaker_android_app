@@ -11,5 +11,7 @@
     <string name="ip_label_text">IP:</string>
     <string name="less_than_symbol">&lt;</string>
     <string name="greater_than_symbol">&gt;</string>
+    <string name="player_string">Player</string>
+    <string name="queue_string">Queue</string>
 
 </resources>

@@ -8,4 +8,5 @@ class MusicPlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.music_player_layout)
     }
+
 }
