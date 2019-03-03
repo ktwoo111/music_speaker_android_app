@@ -3,15 +3,18 @@ package com.csci448.rphipps.musync
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.*
+import com.csci448.rphipps.musync.ClientActivity.Companion.ipAddress
 import kotlinx.android.synthetic.main.queue_item_list.view.*
 import kotlinx.android.synthetic.main.queue_list.*
 import kotlinx.android.synthetic.main.queue_list.view.*
+import java.net.InetAddress
 
 class QueueListFragment: Fragment() {
 
@@ -62,7 +65,15 @@ class QueueListFragment: Fragment() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean =
         when(item?.itemId) {
             R.id.go_to_player_item -> {
-                val intent = Intent(this.context, MusicPlayerActivity::class.java)
+                //getting wifi address
+                val wifiMan = this.context?.getSystemService(Context.WIFI_SERVICE) as WifiManager
+                val wifiInf = wifiMan.connectionInfo
+                val ipAddress = wifiInf.ipAddress
+                val ip = String.format(
+                    "%d.%d.%d.%d", ipAddress and 0xff, ipAddress shr 8 and 0xff, ipAddress shr 16 and 0xff,
+                    ipAddress shr 24 and 0xff
+                )
+                val intent = MusicPlayerFragment.createIntent(this.context as Context, ip, "HOST")
                 startActivity(intent)
                 true
             }

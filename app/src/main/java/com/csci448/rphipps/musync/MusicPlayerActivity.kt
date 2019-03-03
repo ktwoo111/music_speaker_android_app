@@ -16,7 +16,6 @@ class MusicPlayerActivity : SingleFragmentActivity() {
     override fun createFragment(): Fragment {
         return MusicPlayerFragment()
     }
-
     companion object {
         private const val LOG_TAG = "csci448.MusicPlayerAct"
     }

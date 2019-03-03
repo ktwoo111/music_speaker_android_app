@@ -20,11 +20,11 @@ class MusicPlayerFragment: Fragment() {
             return intent
         }
     }
-    private var userType = "HOST"
+    private var userType: String? = "HOST"
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         ip = activity?.intent?.getStringExtra(IP_EXTRA) as String
         ip_text_view.text = ip
-        userType = activity?.intent?.getStringExtra(TYPE_EXTRA) as String
+        userType = activity?.intent?.getStringExtra(TYPE_EXTRA)
         super.onViewCreated(view, savedInstanceState)
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -51,4 +51,13 @@ class MusicPlayerFragment: Fragment() {
             menuItemQueue?.isVisible = false
         }
     }
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean =
+        when(item?.itemId) {
+            R.id.go_to_queue_item -> {
+                val intent = Intent(this.context, QueueListActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
 }
