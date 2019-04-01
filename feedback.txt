@@ -1,0 +1,7 @@
+1. shuffle button/reorder/remove
+2. host/client more instuctions on how to use
+3. seeking (stretch goal)
+4. cleaner queue dividers
+5. back stack gets large - no new activities just new fragments
+6. let client know about incorrect ip address
+7. client see music queue
