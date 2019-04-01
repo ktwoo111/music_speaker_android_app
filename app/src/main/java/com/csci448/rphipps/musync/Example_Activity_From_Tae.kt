@@ -248,6 +248,7 @@ class Example_Activity_From_Tae : AppCompatActivity() {
 
     override fun onDestroy(){
         if(isHost) {
+        //NOTE: VERY VERY IMPORTANT TO SHUT DOWN SERVER WHEN APP IS DESTROYED. THIS IS ESSENTIAL.
             ServerHolder.StopServer()
         }
         Log.d("server_status", "onDestroy() called")
