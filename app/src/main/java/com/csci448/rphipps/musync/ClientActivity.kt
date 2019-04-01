@@ -7,6 +7,7 @@ import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.Toast
 
 import kotlinx.android.synthetic.main.client_layout.*
 
@@ -39,8 +40,15 @@ class ClientActivity : AppCompatActivity() {
         })
 
         submit_button.setOnClickListener {
-            val intent = MusicPlayerFragment.createIntent(this.baseContext, ipAddress, "CLIENT")
-            startActivity(intent)
+            if(ipAddress.matches(Regex("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\$"))){
+                val intent = MusicPlayerFragment.createIntent(this.baseContext, ipAddress, "CLIENT")
+                startActivity(intent)
+            }
+            else{
+                Toast.makeText(this, "Invalid IP address", Toast.LENGTH_SHORT).show()
+                ip_text_box.text.clear()
+            }
+
         }
     }
 }

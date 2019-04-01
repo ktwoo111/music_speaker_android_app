@@ -20,14 +20,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/host_button_text"
                 android:id="@+id/host_button"
-                android:gravity="center_horizontal"/>
+                android:gravity="center"/>
 
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/client_button_text"
                 android:id="@+id/client_button"
-                android:gravity="center_horizontal"/>
+                android:gravity="center"/>
     </LinearLayout>
 
 </LinearLayout>
