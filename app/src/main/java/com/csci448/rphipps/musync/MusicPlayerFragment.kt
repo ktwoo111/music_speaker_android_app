@@ -38,6 +38,14 @@ class MusicPlayerFragment: Fragment() {
 
         ip_text_view.text = ip
 
+        play_pause_button.setOnClickListener {
+            if(play_pause_button.text == getString(R.string.play)) {
+                play_pause_button.text = getString(R.string.pause)
+            } else {
+                play_pause_button.text = getString(R.string.play)
+            }
+        }
+
         if(userType == "CLIENT") {
             button_panel.visibility = View.INVISIBLE
         }
@@ -57,20 +65,18 @@ class MusicPlayerFragment: Fragment() {
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater?.inflate(R.menu.menu_queue_music_player, menu)
-        //if(userType == "HOST") {
+        if(userType == "HOST") {
         val menuItemPlayer = menu?.findItem(R.id.go_to_player_item)
         menuItemPlayer?.isVisible = false
         val menuItemQueue = menu?.findItem(R.id.go_to_queue_item)
         menuItemQueue?.isVisible = true
-        //}
-        /*
+        }
         else{
             val menuItemPlayer = menu?.findItem(R.id.go_to_player_item)
             menuItemPlayer?.isVisible = false
             val menuItemQueue = menu?.findItem(R.id.go_to_queue_item)
             menuItemQueue?.isVisible = false
         }
-        */
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean =

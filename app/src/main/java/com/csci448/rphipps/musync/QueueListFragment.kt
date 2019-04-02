@@ -79,7 +79,7 @@ class QueueListFragment: Fragment() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean =
         when(item?.itemId) {
             R.id.go_to_player_item -> {
-                val newFrag = MusicPlayerFragment.createFragment(ip, userType ?: "HOST")
+                val newFrag = MusicPlayerFragment.createFragment(ip, userType)
                 callbacks?.onSwitchFragments(newFrag)
                 true
             }

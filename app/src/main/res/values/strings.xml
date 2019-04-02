@@ -8,6 +8,8 @@
     <string name="submit_button_text">SUBMIT</string>
     <string name="title_text">Title:</string>
     <string name="artist_text">Artist:</string>
+    <string name="play">PLAY</string>
+    <string name="pause">PAUSE</string>
     <string name="ip_label_text">Host IP:</string>
     <string name="less_than_symbol">&lt;</string>
     <string name="greater_than_symbol">&gt;</string>
