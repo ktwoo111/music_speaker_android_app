@@ -72,7 +72,7 @@ class MusicPlayerFragment: Fragment() {
         }
         */
     }
-    
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean =
         when(item?.itemId) {
             R.id.go_to_queue_item -> {

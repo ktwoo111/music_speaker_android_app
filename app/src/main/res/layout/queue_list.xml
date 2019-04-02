@@ -11,6 +11,11 @@
             android:layout_height="0dp"
             android:layout_weight="1">
     </android.support.v7.widget.RecyclerView>
+    <TextView android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:textSize="24sp"
+              android:text="@string/ip_label_text"
+              android:id="@+id/text_view_host_ip"/>
     <Button
         android:id="@+id/add_song_button"
         android:layout_width="match_parent"

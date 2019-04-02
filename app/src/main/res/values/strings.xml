@@ -4,11 +4,11 @@
     <string name="host_button_text">HOST</string>
     <string name="client_button_text">CLIENT</string>
     <string name="add_music_button">ADD</string>
-    <string name="host_ip_text">Host IP</string>
+    <string name="host_ip_text">Enter the IP address from the Host\'s device (EX: 192.168.1.1)</string>
     <string name="submit_button_text">SUBMIT</string>
     <string name="title_text">Title:</string>
     <string name="artist_text">Artist:</string>
-    <string name="ip_label_text">IP:</string>
+    <string name="ip_label_text">Host IP:</string>
     <string name="less_than_symbol">&lt;</string>
     <string name="greater_than_symbol">&gt;</string>
     <string name="player_string">Player</string>
