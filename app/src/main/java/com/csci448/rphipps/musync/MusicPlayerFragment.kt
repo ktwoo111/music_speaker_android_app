@@ -6,7 +6,13 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.*
+import android.widget.TextView
+import android.widget.Toast
+import com.csci448.rphipps.AudioRetrieval.allAudios
+import com.csci448.rphipps.musync.Client.ClientWebSocket
 import kotlinx.android.synthetic.main.music_player_layout.*
+import okhttp3.Request
+import org.jetbrains.anko.support.v4.runOnUiThread
 
 class MusicPlayerFragment: Fragment() {
     interface Callbacks {
@@ -47,7 +53,10 @@ class MusicPlayerFragment: Fragment() {
         }
 
         if(userType == "CLIENT") {
-            button_panel.visibility = View.INVISIBLE
+            InitializationForClient()
+        }
+        else{ // it is host
+            InitializationForHost()
         }
 
         super.onViewCreated(view, savedInstanceState)
@@ -99,5 +108,74 @@ class MusicPlayerFragment: Fragment() {
         Log.d(LOG_TAG, "onDetach() called")
         callbacks = null
         super.onDetach()
+    }
+
+    fun InitializationForHost(){
+        //initialize title and artist tabs
+        title_text_view.text = allAudios.AudioList[MusicPlayer.musicIndex]._name
+        artist_text_view.text = allAudios.AudioList[MusicPlayer.musicIndex]._artist
+
+        if(MusicPlayer.initialized == false){
+            //initialize player
+            MusicPlayer.initializeHostMusicPlayer()
+            //Tell clients about music selection
+            MusicPlayer.HostSelectMusic()
+            MusicPlayer.initialized = true
+        }
+
+        //button listener
+        play_pause_button.setOnClickListener{
+            if(MusicPlayer.getPlayingPauseStatusOfMediaPlayer() == false) {
+                MusicPlayer.HostStartMusic()
+                Toast.makeText(this.activity, "Play", Toast.LENGTH_SHORT).show()
+            }
+            else {
+
+                MusicPlayer.HostPauseMusic()
+                Toast.makeText(this.activity, "Pause", Toast.LENGTH_SHORT).show()
+            }
+        }
+        sync_button.setOnClickListener {
+            MusicPlayer.HostSyncMusic()
+            Toast.makeText(this.activity, "Sync", Toast.LENGTH_SHORT).show()
+        }
+
+        next_button.setOnClickListener{
+            MusicPlayer.musicIndex++
+            //display title_text
+            title_text_view.text = allAudios.AudioList[MusicPlayer.musicIndex]._name
+            artist_text_view.text = allAudios.AudioList[MusicPlayer.musicIndex]._artist
+            MusicPlayer.ResetMusicPlayer()
+            MusicPlayer.initializeHostMusicPlayer()
+            MusicPlayer.HostSelectMusic()
+        }
+
+        previous_button.setOnClickListener{
+            MusicPlayer.musicIndex--
+            //display title_text
+            title_text_view.text = allAudios.AudioList[ MusicPlayer.musicIndex]._name
+            artist_text_view.text = allAudios.AudioList[MusicPlayer.musicIndex]._artist
+            MusicPlayer.ResetMusicPlayer()
+            MusicPlayer.initializeHostMusicPlayer()
+            MusicPlayer.HostSelectMusic()
+        }
+    }
+
+    fun InitializationForClient(){
+        MusicPlayer.wifi_address = ip
+        //setting up websocket
+        Log.d(LOG_TAG, "GETTING TO websocket")
+        var web_url =  MusicPlayer.wsStuff+ MusicPlayer.wifi_address +":8090"
+        var request_socket = Request.Builder().url(web_url).build()
+        var listener = ClientWebSocket(this)
+        var ws =  MusicPlayer.client?.newWebSocket(request_socket,listener)
+        //TODO: get safe call for when it fails
+
+        button_panel.visibility = View.INVISIBLE
+
+    }
+
+    fun setText(text: TextView, value: String) {
+        runOnUiThread { text.text = value }
     }
 }

@@ -25,6 +25,9 @@ class HttpServer (val port_num : Int = 8080) : NanoHTTPD(port_num) {
         else if (session?.uri?.contains("/title") == true){
             return getTitle(session?.uri)
         }
+        else if (session?.uri?.contains("/artist") == true){
+            return getArtist(session?.uri)
+        }
         else {
             return newFixedLengthResponse("DEFAULT RESPONSE")
         }
@@ -53,6 +56,14 @@ class HttpServer (val port_num : Int = 8080) : NanoHTTPD(port_num) {
 
 
         return newFixedLengthResponse(allAudios.AudioList[t?.get(2)?.toInt() as Int]._name)
+    }
+
+    private fun getArtist(input: String?) : Response{
+        var t = input?.split("/")
+        Log.d("HTTPSERVER", t.toString())
+
+
+        return newFixedLengthResponse(allAudios.AudioList[t?.get(2)?.toInt() as Int]._artist)
     }
 
     //Announce that the file server accepts partial content requests

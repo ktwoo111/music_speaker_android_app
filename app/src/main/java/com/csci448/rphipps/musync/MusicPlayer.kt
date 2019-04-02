@@ -6,14 +6,17 @@ import android.os.Handler
 import android.util.Log
 import com.csci448.rphipps.AudioRetrieval.allAudios
 import com.csci448.rphipps.musync.Servers.ServerHolder
+import com.csci448.rphipps.musync.Servers.Ws
 import com.instacart.library.truetime.TrueTime
 import okhttp3.OkHttpClient
 import org.jetbrains.anko.doAsync
 
 object MusicPlayer {
     private const val LOG_TAG = "448.MUSICPLAYER"
-    var musicIndex = -1
+    var musicIndex = 0 //TODO: GOTTA make sure this gets fixed later and updated according to when queue gets updated
     var musicPlayer: MediaPlayer? = MediaPlayer()
+    var initialized :Boolean? = false
+    var clientWebSocket: Ws? = null
     var handler: Handler = Handler() //used for Host
     var delay: Long = 1500 //delay of amount
     var mRunnable = Runnable {
@@ -24,6 +27,7 @@ object MusicPlayer {
     //variables mainly for Client
     val musicSuffix = ":8080/music/"
     val titleSuffix = ":8080/title/"
+    val artistSuffix = ":8080/artist/"
     val positionSuffix = ":8080/position"
     var httpStuff = "http://"
     var wsStuff = "ws://"
@@ -35,6 +39,10 @@ object MusicPlayer {
     fun getPosition(): Int?{
         return musicPlayer?.currentPosition
 
+    }
+
+    fun getPlayingPauseStatusOfMediaPlayer(): Boolean?{
+        return musicPlayer?.isPlaying
     }
 
 

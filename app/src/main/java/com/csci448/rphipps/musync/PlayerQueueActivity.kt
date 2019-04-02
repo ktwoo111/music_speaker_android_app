@@ -3,6 +3,8 @@ package com.csci448.rphipps.musync
 import android.content.Context
 import android.content.Intent
 import android.support.v4.app.Fragment
+import android.util.Log
+import com.csci448.rphipps.musync.Servers.ServerHolder
 
 class PlayerQueueActivity : SingleFragmentActivity(), QueueListFragment.Callbacks, MusicPlayerFragment.Callbacks {
     override fun onSwitchFragments(newFrag: Fragment) {
@@ -34,5 +36,13 @@ class PlayerQueueActivity : SingleFragmentActivity(), QueueListFragment.Callback
         } else {
             return MusicPlayerFragment.createFragment(ip, type)
         }
+    }
+
+    override fun onDestroy() {
+        Log.d(LOG_TAG,"onDestroy called")
+        ServerHolder.StopServer()
+        Log.d(LOG_TAG,"ServerStop triggered at PlayerQueueActivity")
+        super.onDestroy()
+
     }
 }

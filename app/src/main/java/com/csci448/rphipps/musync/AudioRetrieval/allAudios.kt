@@ -8,6 +8,9 @@ object allAudios {
     private const val LOG_TAG = ".448AllAudios"
 
     val AudioList = mutableListOf<AudioModel>() //a list of all the mp3 files in the phone
+    val QueueList = mutableListOf<AudioModel>() //list for the music queue
+    fun getMusicList() = AudioList
+    fun getMusicQueue() = QueueList
 
     fun getAllAudioFromDevice(context: Context) { //function to scrape all mp3 files and put it into AudioList
 
@@ -16,7 +19,8 @@ object allAudios {
             MediaStore.Audio.AudioColumns.DATA,
             MediaStore.Audio.AudioColumns.TITLE,
             MediaStore.Audio.AudioColumns.ALBUM,
-            MediaStore.Audio.AudioColumns.ARTIST
+            MediaStore.Audio.AudioColumns.ARTIST,
+            MediaStore.Audio.AudioColumns.DURATION
         )
         val sortOrder = MediaStore.Audio.Media.TITLE + " ASC"
         val selection = MediaStore.Audio.Media.IS_MUSIC + "!= 0"
@@ -39,11 +43,13 @@ object allAudios {
                 val name = c.getString(1)   // Retrieve name.
                 val album = c.getString(2)  // Retrieve album name.
                 val artist = c.getString(3) // Retrieve artist name.
+                val duration = c.getString(4) //get duration
 
-                val oneAudio = AudioModel(path, name, album, artist)
+                val oneAudio = AudioModel(path, name, album, artist, duration,counter)
 
                 Log.d(LOG_TAG,"Name :$name, Album :$album, Counter: $counter")
                 Log.d(LOG_TAG,"Path :$path, Artist :$artist")
+                Log.d(LOG_TAG, "duration: $duration")
 
                 // Add the model object to the list .
                 AudioList.add(oneAudio)

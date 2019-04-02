@@ -107,6 +107,7 @@ class Example_Activity_From_Tae : AppCompatActivity() {
             MusicPlayer.musicIndex = music_index.text.toString().toInt()
             //display title_text
             title_text.text = allAudios.AudioList[ MusicPlayer.musicIndex]._name
+
             //initialize player
             MusicPlayer.initializeHostMusicPlayer()
             //Tell clients about music selection

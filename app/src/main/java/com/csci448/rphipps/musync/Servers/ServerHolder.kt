@@ -50,10 +50,14 @@ object ServerHolder { //object to initialize and run both http and webserver
         websocketStuff.start() //starting websocket serve ron port 8090
     }
     fun StopServer(){
+        Log.d(LOG_TAG,"closing http connection")
         httpStuff.closeAllConnections()
         httpStuff.stop()
+        Log.d(LOG_TAG,"closed")
 
+        Log.d(LOG_TAG,"closing websocket connection")
         websocketStuff.closeAllConnections()
         websocketStuff.stop()
+        Log.d(LOG_TAG,"closed")
     }
 }

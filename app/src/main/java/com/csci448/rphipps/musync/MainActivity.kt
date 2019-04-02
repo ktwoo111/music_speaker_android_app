@@ -11,7 +11,13 @@ import android.support.v4.content.ContextCompat
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 import com.crashlytics.android.Crashlytics
+import com.csci448.rphipps.AudioRetrieval.allAudios
+import com.csci448.rphipps.musync.Servers.ServerHolder
+import com.instacart.library.truetime.TrueTime
 import io.fabric.sdk.android.Fabric
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.onComplete
+import org.jetbrains.anko.toast
 
 
 class MainActivity : AppCompatActivity() {
@@ -24,6 +30,19 @@ class MainActivity : AppCompatActivity() {
         Log.d(LOG_TAG, "onCreate() called")
         Fabric.with(this, Crashlytics())
         setContentView(R.layout.activity_main)
+
+
+        doAsync {
+            //NOTE: this is what is needed to sync system clock on all the phones
+            //it's async operation for obivous reason
+            TrueTime.build().initialize()
+            Log.d(LOG_TAG,"True Time Initialized")
+            onComplete{
+                runOnUiThread {
+                    toast("True Time Initialized")
+                }
+            }
+        }
 
 
         if (ContextCompat.checkSelfPermission(this,
@@ -48,6 +67,11 @@ class MainActivity : AppCompatActivity() {
                 "%d.%d.%d.%d", ipAddress and 0xff, ipAddress shr 8 and 0xff, ipAddress shr 16 and 0xff,
                 ipAddress shr 24 and 0xff
             )
+
+            //fetching all the audio files in phone
+            allAudios.getAllAudioFromDevice(this)
+            //start server
+            ServerHolder.RunServer()
 
             val intent = PlayerQueueActivity.createIntent(this.baseContext, ip, "HOST")
             startActivity(intent)
@@ -102,7 +126,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        Log.d(LOG_TAG, "onDestroy() called")
+        Log.d(LOG_TAG,"onDestroy Called")
+        ServerHolder.StopServer()
+        Log.d(LOG_TAG,"ServerStop triggered at PlayerQueueActivity")
         super.onDestroy()
     }
 }

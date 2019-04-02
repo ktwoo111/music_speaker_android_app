@@ -3,18 +3,21 @@ package com.csci448.rphipps.musync.Client
 import android.content.Context
 import android.os.Handler
 import android.util.Log
+import com.csci448.rphipps.musync.ClientActivity
 import com.csci448.rphipps.musync.MainActivity
 import com.csci448.rphipps.musync.MusicPlayer
+import com.csci448.rphipps.musync.MusicPlayerFragment
 
 import com.instacart.library.truetime.TrueTime
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.music_player_layout.*
 import okhttp3.*
 import okio.ByteString
 import java.io.IOException
 import kotlin.math.abs
 
 
-class ClientWebSocket(var activity: MainActivity) : WebSocketListener() { //the websocket for the client
+class ClientWebSocket(var fragment: MusicPlayerFragment) : WebSocketListener() { //the websocket for the client
 
     companion object{
         private const val LOG_TAG= "ClientWebSocket"
@@ -63,7 +66,7 @@ class ClientWebSocket(var activity: MainActivity) : WebSocketListener() { //the 
         MusicPlayer.ResetMusicPlayer()
         MusicPlayer.initializeClientMusicPlayer()
 
-        /*
+
         //http request via Okhttp to get title
         Log.d(LOG_TAG,"getting Title from Host")
         val url = MusicPlayer.httpStuff + MusicPlayer.wifi_address + MusicPlayer.titleSuffix + MusicPlayer.musicIndex.toString()
@@ -75,14 +78,32 @@ class ClientWebSocket(var activity: MainActivity) : WebSocketListener() { //the 
                 //this is being run on a different thread,
                 // so you have to trigger UIthread to make changes to UI with updated info
                 val body = response?.body()?.string()
-                activity?.setText(activity.title_text,body as String)
+                fragment?.setText(fragment.title_text_view,body as String)
             }
             override fun onFailure(call: Call, e: IOException) {
                 Log.d(LOG_TAG, "not good stuff for http for title")
             }
         })
         //end of section for getting title
-        */
+
+        //http request via Okhttp to get artist
+        Log.d(LOG_TAG,"getting Title from Host")
+        val url_artist = MusicPlayer.httpStuff + MusicPlayer.wifi_address + MusicPlayer.artistSuffix + MusicPlayer.musicIndex.toString()
+        val request_artist = Request.Builder().url(url_artist).build()
+        startTime = System.currentTimeMillis()
+        Log.d(LOG_TAG,"http start: $startTime")
+        MusicPlayer.client?.newCall(request_artist)?.enqueue(object: Callback {
+            override fun onResponse(call: Call?, response: Response?){
+                //this is being run on a different thread,
+                // so you have to trigger UIthread to make changes to UI with updated info
+                val body = response?.body()?.string()
+                fragment?.setText(fragment.artist_text_view,body as String)
+            }
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d(LOG_TAG, "not good stuff for http for artist")
+            }
+        })
+        //end of section for getting artist
     }
 
     fun setPause(){

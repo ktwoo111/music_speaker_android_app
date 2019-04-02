@@ -8,6 +8,8 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.*
+import com.csci448.rphipps.AudioRetrieval.AudioModel
+import com.csci448.rphipps.AudioRetrieval.allAudios
 import kotlinx.android.synthetic.main.queue_item_list.view.*
 import kotlinx.android.synthetic.main.queue_list.*
 import kotlinx.android.synthetic.main.queue_list.view.*
@@ -21,7 +23,7 @@ class QueueListFragment: Fragment() {
 
     private lateinit var adapter: MusicListAdapter
     private class MusicListAdapter(val fragment: QueueListFragment,
-                                   val musicList: List<Music>)
+                                   val musicList: List<AudioModel>)
         : RecyclerView.Adapter<MusicHolder>() {
         override fun getItemCount(): Int {
             return musicList.size
@@ -39,11 +41,11 @@ class QueueListFragment: Fragment() {
     }
     private class MusicHolder(val fragment: QueueListFragment, val view: View)
         : RecyclerView.ViewHolder(view) {
-        fun bind(music: Music, position: Int) {
-            view.list_item_run_time.text = music.runTime.toString()
-            view.list_item_song_title.text = music.songTitle
-            view.list_item_album.text = music.artistName
-            view.list_item_artist.text = music.artistName
+        fun bind(music: AudioModel, position: Int) {
+            view.list_item_run_time.text = music._duration
+            view.list_item_song_title.text = music._name
+            view.list_item_album.text = music._album
+            view.list_item_artist.text = music._artist
         }
     }
     companion object {
@@ -87,7 +89,7 @@ class QueueListFragment: Fragment() {
         }
     private fun updateUI() {
 
-        adapter = MusicListAdapter(this, MusicLab.getMusicList() )
+        adapter = MusicListAdapter(this, allAudios.getMusicList() )
         music_queue_recycler_view.adapter = adapter
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int,
@@ -107,7 +109,7 @@ class QueueListFragment: Fragment() {
     ): View? {
         val rootView = inflater.inflate(R.layout.queue_list, container, false)
         rootView.music_queue_recycler_view.layoutManager = LinearLayoutManager( activity )
-        adapter = MusicListAdapter(this, MusicLab.getMusicList() )
+        adapter = MusicListAdapter(this, allAudios.getMusicList() )
         rootView.music_queue_recycler_view.adapter = adapter
         return rootView
     }

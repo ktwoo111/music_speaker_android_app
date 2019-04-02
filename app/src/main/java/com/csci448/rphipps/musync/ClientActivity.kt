@@ -6,13 +6,17 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.Toast
+import com.csci448.rphipps.musync.Client.ClientWebSocket
 
 import kotlinx.android.synthetic.main.client_layout.*
+import okhttp3.Request
 
 class ClientActivity : AppCompatActivity() {
     companion object {
         var ipAddress = ""
+        private const val LOG_TAG = "ClientActivity"
 
         fun createIntent(context: Context) : Intent {
             val intent = Intent(context, ClientActivity::class.java)
