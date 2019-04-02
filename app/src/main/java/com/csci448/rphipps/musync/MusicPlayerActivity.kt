@@ -19,7 +19,4 @@ class MusicPlayerActivity : SingleFragmentActivity() {
     companion object {
         private const val LOG_TAG = "csci448.MusicPlayerAct"
     }
-
-
-
 }

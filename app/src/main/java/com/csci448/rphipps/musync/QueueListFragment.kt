@@ -1,22 +1,23 @@
 package com.csci448.rphipps.musync
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.*
-import com.csci448.rphipps.musync.ClientActivity.Companion.ipAddress
 import kotlinx.android.synthetic.main.queue_item_list.view.*
 import kotlinx.android.synthetic.main.queue_list.*
 import kotlinx.android.synthetic.main.queue_list.view.*
-import java.net.InetAddress
 
 class QueueListFragment: Fragment() {
+    interface Callbacks {
+        fun onSwitchFragments(newFrag : Fragment)
+    }
+
+    private var callbacks : Callbacks? = null
 
     private lateinit var adapter: MusicListAdapter
     private class MusicListAdapter(val fragment: QueueListFragment,
@@ -47,8 +48,21 @@ class QueueListFragment: Fragment() {
     }
     companion object {
         private const val LOG_TAG = "448.QueueListFrag"
-        private const val REQUEST_CODE_DETAILS_FRAGMENT = 0
+        private const val IP_BUNDLE = "IP_BUNDLE"
+        private const val TYPE_BUNDLE = "TYPE_BUNDLE"
+
+        fun createFragment(ip : String, type : String) : Fragment {
+            var arguments = Bundle()
+            arguments.putString(IP_BUNDLE, ip)
+            arguments.putString(TYPE_BUNDLE, type)
+            var fragment = QueueListFragment()
+            fragment.arguments = arguments
+            return fragment
+        }
     }
+
+    private var ip = ""
+    private var userType : String = "HOST"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
@@ -65,16 +79,8 @@ class QueueListFragment: Fragment() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean =
         when(item?.itemId) {
             R.id.go_to_player_item -> {
-                //getting wifi address
-                val wifiMan = this.context?.getSystemService(Context.WIFI_SERVICE) as WifiManager
-                val wifiInf = wifiMan.connectionInfo
-                val ipAddress = wifiInf.ipAddress
-                val ip = String.format(
-                    "%d.%d.%d.%d", ipAddress and 0xff, ipAddress shr 8 and 0xff, ipAddress shr 16 and 0xff,
-                    ipAddress shr 24 and 0xff
-                )
-                val intent = MusicPlayerFragment.createIntent(this.context as Context, ip, "HOST")
-                startActivity(intent)
+                val newFrag = MusicPlayerFragment.createFragment(ip, userType ?: "HOST")
+                callbacks?.onSwitchFragments(newFrag)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -111,7 +117,31 @@ class QueueListFragment: Fragment() {
             val intent = Intent(this.context, AddSongActivity::class.java)
             startActivity(intent)
         }
+
+        ip = arguments?.getString(IP_BUNDLE) ?: "000.00.00.00"
+        userType = arguments?.getString(TYPE_BUNDLE) ?: "HOST"
+
+        if(userType == "HOST") {
+            add_song_button.isEnabled = true
+        } else if(userType == "CLIENT") {
+            add_song_button.isEnabled = false
+        }
+
+        ip_queue_text.text = ip
+
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        Log.d(LOG_TAG, "onAttach() called")
+        callbacks = context as Callbacks
+    }
+
+    override fun onDetach() {
+        Log.d(LOG_TAG, "onDetach() called")
+        callbacks = null
+        super.onDetach()
     }
 
 }

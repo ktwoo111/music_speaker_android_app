@@ -3,7 +3,6 @@ package com.csci448.rphipps.musync
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
@@ -39,7 +38,7 @@ class ClientActivity : AppCompatActivity() {
         })
 
         submit_button.setOnClickListener {
-            val intent = MusicPlayerFragment.createIntent(this.baseContext, ipAddress, "CLIENT")
+            val intent = PlayerQueueActivity.createIntent(this.baseContext, ipAddress, "CLIENT")
             startActivity(intent)
         }
     }
