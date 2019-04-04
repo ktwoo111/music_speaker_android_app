@@ -1,6 +1,7 @@
 package com.csci448.rphipps.musync.Servers
 
 import android.util.Log
+import com.csci448.rphipps.AudioRetrieval.allAudios
 import com.csci448.rphipps.musync.MusicPlayer
 
 object ServerHolder { //object to initialize and run both http and webserver
@@ -37,7 +38,7 @@ object ServerHolder { //object to initialize and run both http and webserver
 
     fun sendMusicToAllClients(){
         for (client in clients) {
-            client.send("3;${MusicPlayer.musicIndex}")
+            client.send("3;${allAudios.QueueList[MusicPlayer.musicIndex]._index}")
         }
     }
 

@@ -13,7 +13,7 @@ import org.jetbrains.anko.doAsync
 
 object MusicPlayer {
     private const val LOG_TAG = "448.MUSICPLAYER"
-    var musicIndex = 0 //TODO: GOTTA make sure this gets fixed later and updated according to when queue gets updated
+    var musicIndex = 0 //for client, this is index referencing AudioList. For host, this is index referencing QueueList
     var musicPlayer: MediaPlayer? = MediaPlayer()
     var initialized :Boolean? = false
     var clientWebSocket: Ws? = null
@@ -102,6 +102,7 @@ object MusicPlayer {
     }
 
     fun initializeClientMusicPlayer(){
+        Log.d(LOG_TAG,httpStuff+wifi_address+musicSuffix+ musicIndex)
         musicPlayer?.setDataSource(httpStuff+wifi_address+musicSuffix+musicIndex)
         musicPlayer?.setAudioStreamType(AudioManager.STREAM_MUSIC)
         musicPlayer?.prepareAsync()
