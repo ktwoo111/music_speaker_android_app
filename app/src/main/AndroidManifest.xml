@@ -24,11 +24,6 @@
         <activity android:name=".PlayerQueueActivity">
 
         </activity>
-        <activity android:name=".QueueListActivity">
-
-        </activity>
-        <activity android:name=".MusicPlayerActivity">
-        </activity>
 
         <activity android:name=".AddSongActivity"></activity>
         <activity android:name=".ClientActivity">

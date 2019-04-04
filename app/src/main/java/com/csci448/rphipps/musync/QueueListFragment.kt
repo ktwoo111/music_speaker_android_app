@@ -15,6 +15,8 @@ import kotlinx.android.synthetic.main.queue_list.*
 import kotlinx.android.synthetic.main.queue_list.view.*
 
 class QueueListFragment: Fragment() {
+
+
     interface Callbacks {
         fun onSwitchFragments(newFrag : Fragment)
     }
@@ -42,7 +44,7 @@ class QueueListFragment: Fragment() {
     private class MusicHolder(val fragment: QueueListFragment, val view: View)
         : RecyclerView.ViewHolder(view) {
         fun bind(music: AudioModel, position: Int) {
-            view.list_item_run_time.text = music._duration
+            view.list_item_run_time.text = allAudios.convertTime(music)
             view.list_item_song_title.text = music._name
             view.list_item_album.text = music._album
             view.list_item_artist.text = music._artist
@@ -72,11 +74,18 @@ class QueueListFragment: Fragment() {
     }
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
+
         inflater?.inflate(R.menu.menu_queue_music_player, menu)
         val menuItemPlayer = menu?.findItem(R.id.go_to_player_item)
-        menuItemPlayer?.isVisible = true
+        if(allAudios.QueueList.size != 0) {
+            menuItemPlayer?.isVisible = true
+        }
+        else {
+            menuItemPlayer?.isVisible = false
+        }
         val menuItemQueue = menu?.findItem(R.id.go_to_queue_item)
         menuItemQueue?.isVisible = false
+
     }
     override fun onOptionsItemSelected(item: MenuItem?): Boolean =
         when(item?.itemId) {
@@ -89,7 +98,7 @@ class QueueListFragment: Fragment() {
         }
     private fun updateUI() {
 
-        adapter = MusicListAdapter(this, allAudios.getMusicList() )
+        adapter = MusicListAdapter(this, allAudios.getMusicQueue() )
         music_queue_recycler_view.adapter = adapter
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int,
@@ -98,10 +107,21 @@ class QueueListFragment: Fragment() {
     }
     override fun onResume() {
         super.onResume()
+        activity?.invalidateOptionsMenu()
         updateUI()
-        Log.d(LOG_TAG, "onResume called")
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu?) {
+        val menuItemPlayer = menu?.findItem(R.id.go_to_player_item)
+        if(allAudios.QueueList.size != 0) {
+            Log.d(LOG_TAG, allAudios.QueueList.size.toString())
+            menuItemPlayer?.isVisible = true
+        }
+        else {
+            menuItemPlayer?.isVisible = false
+        }
+        super.onPrepareOptionsMenu(menu)
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -109,7 +129,7 @@ class QueueListFragment: Fragment() {
     ): View? {
         val rootView = inflater.inflate(R.layout.queue_list, container, false)
         rootView.music_queue_recycler_view.layoutManager = LinearLayoutManager( activity )
-        adapter = MusicListAdapter(this, allAudios.getMusicList() )
+        adapter = MusicListAdapter(this, allAudios.getMusicQueue() )
         rootView.music_queue_recycler_view.adapter = adapter
         return rootView
     }

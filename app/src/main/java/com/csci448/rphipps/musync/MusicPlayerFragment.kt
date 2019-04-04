@@ -112,8 +112,8 @@ class MusicPlayerFragment: Fragment() {
 
     fun InitializationForHost(){
         //initialize title and artist tabs
-        title_text_view.text = allAudios.AudioList[MusicPlayer.musicIndex]._name
-        artist_text_view.text = allAudios.AudioList[MusicPlayer.musicIndex]._artist
+        title_text_view.text = allAudios.QueueList[MusicPlayer.musicIndex]._name//allAudios.AudioList[MusicPlayer.musicIndex]._name
+        artist_text_view.text = allAudios.QueueList[MusicPlayer.musicIndex]._artist//allAudios.AudioList[MusicPlayer.musicIndex]._artist
 
         if(MusicPlayer.initialized == false){
             //initialize player
@@ -127,11 +127,13 @@ class MusicPlayerFragment: Fragment() {
         play_pause_button.setOnClickListener{
             if(MusicPlayer.getPlayingPauseStatusOfMediaPlayer() == false) {
                 MusicPlayer.HostStartMusic()
+                play_pause_button.text = "PAUSE"
                 Toast.makeText(this.activity, "Play", Toast.LENGTH_SHORT).show()
             }
             else {
 
                 MusicPlayer.HostPauseMusic()
+                play_pause_button.text = "PLAY"
                 Toast.makeText(this.activity, "Pause", Toast.LENGTH_SHORT).show()
             }
         }
@@ -141,19 +143,31 @@ class MusicPlayerFragment: Fragment() {
         }
 
         next_button.setOnClickListener{
-            MusicPlayer.musicIndex++
+            if (MusicPlayer.musicIndex != allAudios.QueueList.size - 1) {
+                MusicPlayer.musicIndex++
+            }
+            else {
+                MusicPlayer.musicIndex = 0
+            }
+            play_pause_button.text = "PLAY"
             //display title_text
-            title_text_view.text = allAudios.AudioList[MusicPlayer.musicIndex]._name
-            artist_text_view.text = allAudios.AudioList[MusicPlayer.musicIndex]._artist
+            title_text_view.text = allAudios.QueueList[MusicPlayer.musicIndex]._name//allAudios.AudioList[MusicPlayer.musicIndex]._name
+            artist_text_view.text = allAudios.QueueList[MusicPlayer.musicIndex]._artist//allAudios.AudioList[MusicPlayer.musicIndex]._artist
             MusicPlayer.ResetMusicPlayer()
             MusicPlayer.initializeHostMusicPlayer()
             MusicPlayer.HostSelectMusic()
         }
 
         previous_button.setOnClickListener{
-            MusicPlayer.musicIndex--
+            if (MusicPlayer.musicIndex != allAudios.QueueList.size - 1) {
+                MusicPlayer.musicIndex++
+            }
+            else {
+                MusicPlayer.musicIndex = 0
+            }
+            play_pause_button.text = "PLAY"
             //display title_text
-            title_text_view.text = allAudios.AudioList[ MusicPlayer.musicIndex]._name
+            title_text_view.text = allAudios.AudioList[MusicPlayer.musicIndex]._name
             artist_text_view.text = allAudios.AudioList[MusicPlayer.musicIndex]._artist
             MusicPlayer.ResetMusicPlayer()
             MusicPlayer.initializeHostMusicPlayer()
@@ -170,7 +184,7 @@ class MusicPlayerFragment: Fragment() {
         var listener = ClientWebSocket(this)
         var ws =  MusicPlayer.client?.newWebSocket(request_socket,listener)
         //TODO: get safe call for when it fails
-
+        sync_button.visibility = View.INVISIBLE
         button_panel.visibility = View.INVISIBLE
 
     }

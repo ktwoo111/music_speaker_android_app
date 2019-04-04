@@ -96,7 +96,7 @@ object MusicPlayer {
     }
 
     fun initializeHostMusicPlayer(){
-        musicPlayer?.setDataSource(allAudios.AudioList[musicIndex]._path)
+        musicPlayer?.setDataSource(allAudios.QueueList[musicIndex]._path)
         musicPlayer?.setAudioStreamType(AudioManager.STREAM_MUSIC)
         musicPlayer?.prepareAsync()
     }

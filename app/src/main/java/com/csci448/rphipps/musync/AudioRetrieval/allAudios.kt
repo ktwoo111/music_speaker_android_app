@@ -4,14 +4,25 @@ import android.content.Context
 import android.provider.MediaStore
 import android.util.Log
 
+
+
 object allAudios {
     private const val LOG_TAG = ".448AllAudios"
 
     val AudioList = mutableListOf<AudioModel>() //a list of all the mp3 files in the phone
+    //val QueueList = mutableListOf<Int>() //list for the music queue
     val QueueList = mutableListOf<AudioModel>() //list for the music queue
     fun getMusicList() = AudioList
     fun getMusicQueue() = QueueList
+    fun convertTime(song: AudioModel): String {
+        val minutes = song._duration.toInt() / 1000 / 60
+        var seconds = (song._duration.toInt() / 1000 % 60).toString()
+        if (seconds.toInt() < 10) {
+            seconds = "0" + seconds
+        }
 
+        return minutes.toString() + ":" + seconds
+    }
     fun getAllAudioFromDevice(context: Context) { //function to scrape all mp3 files and put it into AudioList
 
         val uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
