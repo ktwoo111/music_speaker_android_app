@@ -3,6 +3,7 @@ package com.csci448.rphipps.musync.Client
 import android.content.Context
 import android.os.Handler
 import android.util.Log
+import com.csci448.rphipps.AudioRetrieval.allAudios
 import com.csci448.rphipps.musync.ClientActivity
 import com.csci448.rphipps.musync.MainActivity
 import com.csci448.rphipps.musync.MusicPlayer
@@ -69,7 +70,7 @@ class ClientWebSocket(var fragment: MusicPlayerFragment) : WebSocketListener() {
 
         //http request via Okhttp to get title
         Log.d(LOG_TAG,"getting Title from Host")
-        val url = MusicPlayer.httpStuff + MusicPlayer.wifi_address + MusicPlayer.titleSuffix + MusicPlayer.musicIndex.toString()
+        val url = MusicPlayer.httpStuff + MusicPlayer.wifi_address + MusicPlayer.titleSuffix + index.toString()
         val request_title = Request.Builder().url(url).build()
         var startTime = System.currentTimeMillis()
         Log.d(LOG_TAG,"http start: $startTime")
@@ -88,7 +89,7 @@ class ClientWebSocket(var fragment: MusicPlayerFragment) : WebSocketListener() {
 
         //http request via Okhttp to get artist
         Log.d(LOG_TAG,"getting Title from Host")
-        val url_artist = MusicPlayer.httpStuff + MusicPlayer.wifi_address + MusicPlayer.artistSuffix + MusicPlayer.musicIndex.toString()
+        val url_artist = MusicPlayer.httpStuff + MusicPlayer.wifi_address + MusicPlayer.artistSuffix + index.toString()
         val request_artist = Request.Builder().url(url_artist).build()
         startTime = System.currentTimeMillis()
         Log.d(LOG_TAG,"http start: $startTime")

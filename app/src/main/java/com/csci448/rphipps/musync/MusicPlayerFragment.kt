@@ -143,7 +143,7 @@ class MusicPlayerFragment: Fragment() {
         }
 
         next_button.setOnClickListener{
-            if (MusicPlayer.musicIndex != allAudios.QueueList.size - 1) {
+            if (MusicPlayer.musicIndex < allAudios.QueueList.size - 1) {
                 MusicPlayer.musicIndex++
             }
             else {
@@ -159,16 +159,16 @@ class MusicPlayerFragment: Fragment() {
         }
 
         previous_button.setOnClickListener{
-            if (MusicPlayer.musicIndex != allAudios.QueueList.size - 1) {
-                MusicPlayer.musicIndex++
+            if (MusicPlayer.musicIndex > 0) {
+                MusicPlayer.musicIndex--
             }
             else {
-                MusicPlayer.musicIndex = 0
+                MusicPlayer.musicIndex = allAudios.QueueList.size -1
             }
             play_pause_button.text = "PLAY"
             //display title_text
-            title_text_view.text = allAudios.AudioList[MusicPlayer.musicIndex]._name
-            artist_text_view.text = allAudios.AudioList[MusicPlayer.musicIndex]._artist
+            title_text_view.text = allAudios.QueueList[MusicPlayer.musicIndex]._name
+            artist_text_view.text = allAudios.QueueList[MusicPlayer.musicIndex]._artist
             MusicPlayer.ResetMusicPlayer()
             MusicPlayer.initializeHostMusicPlayer()
             MusicPlayer.HostSelectMusic()

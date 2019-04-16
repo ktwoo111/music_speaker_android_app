@@ -10,7 +10,6 @@ object allAudios {
     private const val LOG_TAG = ".448AllAudios"
 
     val AudioList = mutableListOf<AudioModel>() //a list of all the mp3 files in the phone
-    //val QueueList = mutableListOf<Int>() //list for the music queue
     val QueueList = mutableListOf<AudioModel>() //list for the music queue
     fun getMusicList() = AudioList
     fun getMusicQueue() = QueueList
