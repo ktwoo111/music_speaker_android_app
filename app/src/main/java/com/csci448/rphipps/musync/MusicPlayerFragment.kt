@@ -75,10 +75,11 @@ class MusicPlayerFragment: Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
         inflater?.inflate(R.menu.menu_queue_music_player, menu)
         if(userType == "HOST") {
-        val menuItemPlayer = menu?.findItem(R.id.go_to_player_item)
-        menuItemPlayer?.isVisible = false
-        val menuItemQueue = menu?.findItem(R.id.go_to_queue_item)
-        menuItemQueue?.isVisible = true
+            menu?.findItem(R.id.help_btn)?.isVisible = false
+            val menuItemPlayer = menu?.findItem(R.id.go_to_player_item)
+            menuItemPlayer?.isVisible = false
+            val menuItemQueue = menu?.findItem(R.id.go_to_queue_item)
+            menuItemQueue?.isVisible = true
         }
         else{
             val menuItemPlayer = menu?.findItem(R.id.go_to_player_item)

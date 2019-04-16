@@ -149,6 +149,7 @@ class QueueListFragment: Fragment() {
         if(allAudios.QueueList.size != 0) {
             Log.d(LOG_TAG, allAudios.QueueList.size.toString())
             menuItemPlayer?.isVisible = true
+            menu?.findItem(R.id.help_btn)?.isVisible = true
         }
         else {
             menuItemPlayer?.isVisible = false
