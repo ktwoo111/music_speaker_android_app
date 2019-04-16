@@ -112,7 +112,6 @@ class QueueListFragment: Fragment() {
 
                 // Display a neutral button on alert dialog
                 builder.setNeutralButton("Close"){_,_ ->
-                    Toast.makeText(this.context,"You cancelled the dialog.",Toast.LENGTH_SHORT).show()
                 }
 
                 // Finally, make the alert dialog using builder
