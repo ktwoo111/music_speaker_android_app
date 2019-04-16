@@ -2,6 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
         <item
+                android:title="Help Button"
+                android:id="@+id/help_btn"
+                android:icon="@drawable/ic_help_btn"
+                android:visible="true"
+                app:showAsAction="ifRoom|withText">
+        </item>
+        <item
                 android:title="@string/player_string"
                 android:id="@+id/go_to_player_item"
                 android:icon="@drawable/ic_menu_next"

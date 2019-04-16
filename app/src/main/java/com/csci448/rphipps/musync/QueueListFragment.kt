@@ -1,28 +1,34 @@
 package com.csci448.rphipps.musync
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.support.v13.view.DragStartHelper
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.util.Log
 import android.view.*
+import android.widget.PopupWindow
+import android.widget.Toast
 import com.csci448.rphipps.AudioRetrieval.AudioModel
 import com.csci448.rphipps.AudioRetrieval.allAudios
 import kotlinx.android.synthetic.main.queue_item_list.view.*
 import kotlinx.android.synthetic.main.queue_list.*
 import kotlinx.android.synthetic.main.queue_list.view.*
+import org.jetbrains.anko.support.v4.act
+import java.util.*
 
 class QueueListFragment: Fragment() {
-
 
     interface Callbacks {
         fun onSwitchFragments(newFrag : Fragment)
     }
 
     private var callbacks : Callbacks? = null
-
     private lateinit var adapter: MusicListAdapter
     private class MusicListAdapter(val fragment: QueueListFragment,
                                    val musicList: List<AudioModel>)
@@ -87,8 +93,35 @@ class QueueListFragment: Fragment() {
         menuItemQueue?.isVisible = false
 
     }
+    fun showPopUp(view: View) {
+
+    }
     override fun onOptionsItemSelected(item: MenuItem?): Boolean =
         when(item?.itemId) {
+            R.id.help_btn -> {
+                val builder = AlertDialog.Builder(this.context)
+
+                // Set the alert dialog title
+                builder.setTitle("Help")
+
+                // Display a message on alert dialog
+                builder.setMessage("Add music that you would like to play with the ADD button." +
+                        " Long press a song to drag it around the queue. Use the arrow in the top right corner" +
+                        " to get to the music player.")
+
+
+                // Display a neutral button on alert dialog
+                builder.setNeutralButton("Close"){_,_ ->
+                    Toast.makeText(this.context,"You cancelled the dialog.",Toast.LENGTH_SHORT).show()
+                }
+
+                // Finally, make the alert dialog using builder
+                val dialog: AlertDialog = builder.create()
+
+                // Display the alert dialog on app interface
+                dialog.show()
+                true
+            }
             R.id.go_to_player_item -> {
                 val newFrag = MusicPlayerFragment.createFragment(ip, userType)
                 callbacks?.onSwitchFragments(newFrag)
@@ -100,6 +133,7 @@ class QueueListFragment: Fragment() {
 
         adapter = MusicListAdapter(this, allAudios.getMusicQueue() )
         music_queue_recycler_view.adapter = adapter
+
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int,
                                   data: Intent?) {
@@ -131,6 +165,19 @@ class QueueListFragment: Fragment() {
         rootView.music_queue_recycler_view.layoutManager = LinearLayoutManager( activity )
         adapter = MusicListAdapter(this, allAudios.getMusicQueue() )
         rootView.music_queue_recycler_view.adapter = adapter
+        val touchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0){
+            override fun onMove(p0: RecyclerView, p1: RecyclerView.ViewHolder, p2: RecyclerView.ViewHolder): Boolean {
+                Collections.swap(adapter.musicList, p1.adapterPosition, p2.adapterPosition)
+                adapter.notifyItemMoved(p1.adapterPosition,p2.adapterPosition)
+                return true
+            }
+
+            override fun onSwiped(p0: RecyclerView.ViewHolder, p1: Int) {
+                return
+            }
+
+        })
+        touchHelper.attachToRecyclerView(rootView.music_queue_recycler_view)
         return rootView
     }
 
