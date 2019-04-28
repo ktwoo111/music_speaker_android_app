@@ -50,21 +50,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="70dp"
                 android:textSize="36sp"
-                android:text="@string/less_than_symbol"/>
+                android:text="@string/less_than_symbol" android:background="@color/colorPrimary" android:layout_margin="5dp"/>
 
         <Button
                 android:id="@+id/play_pause_button"
                 android:layout_width="wrap_content"
                 android:layout_height="70dp"
                 android:textSize="36sp"
-                android:text="@string/play"/>
+                android:text="@string/play" android:background="@color/colorPrimary" android:layout_margin="5dp"/>
 
         <Button
                 android:id="@+id/next_button"
                 android:layout_width="wrap_content"
                 android:layout_height="70dp"
                 android:textSize="36sp"
-                android:text="@string/greater_than_symbol"/>
+                android:text="@string/greater_than_symbol" android:background="@color/colorPrimary" android:layout_margin="5dp"/>
     </LinearLayout>
     <Button
             android:id="@+id/sync_button"
@@ -72,10 +72,11 @@
             android:layout_height="wrap_content"
             android:textSize="24sp"
             android:text="sync"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center" android:background="@color/colorPrimary"/>
     <TextView android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:gravity="center"
+              android:id="@+id/sync_text_view"
               android:text="Press Sync to Resync Host to Clients in the event of audio delay"/>
     <LinearLayout
             android:layout_width="wrap_content"

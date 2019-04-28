@@ -3,6 +3,7 @@ package com.csci448.rphipps.musync.Client
 import android.content.Context
 import android.os.Handler
 import android.util.Log
+import android.widget.Toast
 import com.csci448.rphipps.AudioRetrieval.allAudios
 import com.csci448.rphipps.musync.ClientActivity
 import com.csci448.rphipps.musync.MainActivity

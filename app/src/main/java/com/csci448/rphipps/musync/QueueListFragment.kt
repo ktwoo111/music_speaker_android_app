@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.queue_list.*
 import kotlinx.android.synthetic.main.queue_list.view.*
 import org.jetbrains.anko.support.v4.act
 import java.util.*
+import kotlin.math.abs
 
 class QueueListFragment: Fragment() {
 
@@ -50,6 +51,9 @@ class QueueListFragment: Fragment() {
     private class MusicHolder(val fragment: QueueListFragment, val view: View)
         : RecyclerView.ViewHolder(view) {
         fun bind(music: AudioModel, position: Int) {
+            if(position == MusicPlayer.musicIndex){
+                view.setBackgroundColor(Color.rgb(13, 213, 252))
+            }
             view.list_item_run_time.text = allAudios.convertTime(music)
             view.list_item_song_title.text = music._name
             view.list_item_album.text = music._album
@@ -78,9 +82,10 @@ class QueueListFragment: Fragment() {
         setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
     }
+    private lateinit var menuThing: Menu
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
-
+        menuThing = menu as Menu
         inflater?.inflate(R.menu.menu_queue_music_player, menu)
         val menuItemPlayer = menu?.findItem(R.id.go_to_player_item)
         if(allAudios.QueueList.size != 0) {
@@ -106,7 +111,7 @@ class QueueListFragment: Fragment() {
 
                 // Display a message on alert dialog
                 builder.setMessage("Add music that you would like to play with the ADD button." +
-                        " Long press a song to drag it around the queue. Use the arrow in the top right corner" +
+                        " Long press a song to drag it around the queue. Swiping left on a song will remove it from the queue. Use the arrow in the top right corner" +
                         " to get to the music player.")
 
 
@@ -165,18 +170,57 @@ class QueueListFragment: Fragment() {
         rootView.music_queue_recycler_view.layoutManager = LinearLayoutManager( activity )
         adapter = MusicListAdapter(this, allAudios.getMusicQueue() )
         rootView.music_queue_recycler_view.adapter = adapter
-        val touchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0){
+        val touchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.LEFT){
             override fun onMove(p0: RecyclerView, p1: RecyclerView.ViewHolder, p2: RecyclerView.ViewHolder): Boolean {
+                Log.d("INFO", "${MusicPlayer.musicIndex.toString()}, ${p1.adapterPosition.toString()},${p2.adapterPosition.toString()}")
+                if(MusicPlayer.musicIndex == p1.adapterPosition){
+                    MusicPlayer.musicIndex = p2.adapterPosition
+                }
+                else if( abs(MusicPlayer.musicIndex - p1.adapterPosition) == 1){
+                    if(p1.adapterPosition > MusicPlayer.musicIndex){
+                        Log.d("DECREM", MusicPlayer.musicIndex.toString())
+                        MusicPlayer.musicIndex++
+                    }
+                    else {
+                        MusicPlayer.musicIndex--
+                        Log.d("INCREM", MusicPlayer.musicIndex.toString())
+                    }
+                }
                 Collections.swap(adapter.musicList, p1.adapterPosition, p2.adapterPosition)
+
                 adapter.notifyItemMoved(p1.adapterPosition,p2.adapterPosition)
                 return true
             }
 
             override fun onSwiped(p0: RecyclerView.ViewHolder, p1: Int) {
-                return
+                if(p1 == ItemTouchHelper.LEFT) {
+                    if(p0.adapterPosition < MusicPlayer.musicIndex){
+                        MusicPlayer.musicIndex--
+                    }
+                    else if(p0.adapterPosition == MusicPlayer.musicIndex){
+                        if(MusicPlayer.musicIndex > 0){
+                            MusicPlayer.musicIndex--
+                        }
+                        MusicPlayer.HostPauseMusic()
+                        MusicPlayer.ResetMusicPlayer()
+                        MusicPlayer.initialized = false
+
+                    }
+                    allAudios.QueueList.removeAt(p0.adapterPosition)
+                    adapter.notifyDataSetChanged()
+                    if(allAudios.QueueList.size == 0){
+                        val menuItemPlayer = menuThing?.findItem(R.id.go_to_player_item)
+                        menuItemPlayer?.isVisible = false
+                        MusicPlayer.HostPauseMusic()
+                        MusicPlayer.ResetMusicPlayer()
+                        MusicPlayer.initialized = false
+                        rootView.invalidate()
+                    }
+                }
             }
 
         })
+
         touchHelper.attachToRecyclerView(rootView.music_queue_recycler_view)
         return rootView
     }

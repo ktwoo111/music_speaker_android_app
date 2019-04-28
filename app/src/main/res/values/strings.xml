@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">MuSYNC</string>
     <string name="host_button_text">HOST</string>
-    <string name="client_button_text">CLIENT</string>
+    <string name="client_button_text">GUEST</string>
     <string name="add_music_button">ADD SONG</string>
     <string name="host_ip_text">Enter the IP address from the Host\'s device (EX: 192.168.1.1)</string>
     <string name="submit_button_text">SUBMIT</string>
@@ -15,5 +15,5 @@
     <string name="player_string">Player</string>
     <string name="queue_string">Queue</string>
     <string name="host_info">The Host will pick and play music that will be played through clients phone.</string>
-    <string name="client_info">A Client will connect to the Host through an IP address shown on the Host device.</string>
+    <string name="client_info">A Guest will connect to the Host through an IP address shown on the Host device.</string>
 </resources>

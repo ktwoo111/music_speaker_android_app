@@ -122,6 +122,8 @@ class MusicPlayerFragment: Fragment() {
             //Tell clients about music selection
             MusicPlayer.HostSelectMusic()
             MusicPlayer.initialized = true
+
+
         }
 
         //button listener
@@ -177,6 +179,8 @@ class MusicPlayerFragment: Fragment() {
     }
 
     fun InitializationForClient(){
+        title_text_view.text = "not connected yet"
+        artist_text_view.text = "not connected yet"
         MusicPlayer.wifi_address = ip
         //setting up websocket
         Log.d(LOG_TAG, "GETTING TO websocket")
@@ -187,6 +191,7 @@ class MusicPlayerFragment: Fragment() {
         //TODO: get safe call for when it fails
         sync_button.visibility = View.INVISIBLE
         button_panel.visibility = View.INVISIBLE
+        sync_text_view.visibility = View.INVISIBLE
 
     }
 
