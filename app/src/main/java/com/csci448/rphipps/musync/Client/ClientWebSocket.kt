@@ -148,4 +148,10 @@ class ClientWebSocket(var fragment: MusicPlayerFragment) : WebSocketListener() {
         webSocket.close(NORMAL_CLOSURE_STATUS, null)
     }
 
+    override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+        Log.d(LOG_TAG, "Connection Failed")
+        Log.d(LOG_TAG, "the response: ${response?.body()?.toString()}" )
+        Log.d(LOG_TAG, "the response: ${t.message}" )
+    }
+
 }
