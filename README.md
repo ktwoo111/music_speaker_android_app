@@ -1,3 +1,10 @@
+DEMO:
+
+
+https://user-images.githubusercontent.com/22581191/133325425-4bbfb667-9d27-4ecc-a998-7937c1747179.mp4
+
+
+
 This app requires mp3 files to test which we have provided 3 in the music folder. To put them on an emulator simply drag and drop them. If they do not automatically install then make sure the SD card is initialized by draging down the toolbar and clicking the notification that mentions setting up the virtual SD card. The app searches the entire filesystem for mp3 files so if you have your own to test they will work as well. The mp3 files can be transfered onto a physical device through a cable as well.
 
 To use the app you need two phones to properly test the syncing (1 phone can work for basic music player functionality):
